@@ -1,0 +1,96 @@
+{
+  "info": {
+    "name": "Shop-Services",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "9f23a91c-8d3f-4dad-9fb2-b5a9c7d2b2dd"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create account",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", ""]
+        }
+      }
+    },
+    {
+      "name": "Top-up balance",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 100\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/payments/topup",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "topup"]
+        }
+      }
+    },
+    {
+      "name": "Get balance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/payments/balance",
+          "host": ["{{baseUrl}}"],
+          "path": ["payments", "balance"]
+        }
+      }
+    },
+    {
+      "name": "Create order",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 50\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", ""]
+        }
+      }
+    },
+    {
+      "name": "List orders",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", ""]
+        }
+      }
+    },
+    {
+      "name": "Get order by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "1"]
+        }
+      }
+    }
+  ]
+}

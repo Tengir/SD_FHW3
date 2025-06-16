@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"   # UI
+      - "5672:5672"     # AMQP
+    healthcheck:                    # ← добавили
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  orders:
+    build:
+      context: .
+      dockerfile: orders/Dockerfile
+    container_name: orders
+    environment:
+      - RABBIT_URL=amqp://guest:guest@rabbitmq:5672/
+      - SERVICE_NAME=orders
+    ports:
+      - "8001:8001"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  payments:
+    build:
+      context: .
+      dockerfile: payments/Dockerfile
+    container_name: payments
+    environment:
+      - RABBIT_URL=amqp://guest:guest@rabbitmq:5672/
+      - SERVICE_NAME=payments
+    ports:
+      - "8002:8002"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: gateway
+    environment:
+      - ORDERS_SERVICE_URL=http://orders:8001
+      - PAYMENTS_SERVICE_URL=http://payments:8002
+    ports:
+      - "8000:8000"
+    depends_on:
+      - orders
+      - payments
+
+volumes:
+  orders_data:
+  payments_data:
